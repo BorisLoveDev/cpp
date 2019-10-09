@@ -1,3 +1,8 @@
+//File: Student.h
+//Author: Harchenko B.V.
+//Group: M3O-221B-18
+// Date: 9.10.19
+
 #pragma once
 
 #include <fstream>
