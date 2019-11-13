@@ -5,7 +5,7 @@
 #include <cmath>
 using namespace std;
 
-const int START_MONEY = 1000;
+const int START_MONEY = 500;
 
 class Player {
 private:
@@ -15,6 +15,7 @@ private:
 
 
 public:
+
 	void add_name(string str){
 		name = str;
 	}
@@ -22,16 +23,33 @@ public:
 		money = money + temp; 
 
 	}
+	int get_money(){
+		return money;
+	}
 	void edit_bet(int x){
+		cout << name << ", ваш баланс:" << money << endl;
+		while(x > money){
+		cout << name << ", у Вас недостаточно денег для такой ставки! Заложите квартиру и повторите" << endl;
+		cout << name << ", ваша ставка?" << endl;
+		cin >> x;
+		}
+		while ((x < 0) || (x > money)){
+		cout << name << ", ваш баланс:"<< money << ", неккоректная ставка! повторите ввод" << endl;//разные оповещения 
+		cout << name << ", ваша ставка?" << endl;
+		cin >> x;
+		}
 		bet = x;
 	}
 	string get_name()
 	{return name;}
 	void win(){
 		edit_money(bet);
+		cout << name << ", поздрявляем! Ваш баланс: " << money << endl;
 	}
 	void lose(){
 		edit_money(-bet);
+
+		cout << name << ", не отчаивайся! Ведь, твой баланс: " << money << endl;
 	}
 	int what_angle(){
 		int angle;
@@ -99,7 +117,7 @@ public:
 };
 
 class Game {
-public:			//	как пофиксить public
+private:			//	как пофиксить public
 	Player first;
 	Player second;
 
@@ -115,30 +133,64 @@ public:
 	}
 	void bets(){
 		int bet;
-		cout << first.get_name() << ", ваша ставка?" << endl;
+		cout << first.get_name() <<", баланс:" << first.get_money() << " ваша ставка?" << endl;
 		cin >> bet;
 		first.edit_bet(bet);
 		cout << second.get_name() << ", ваша ставка?" << endl;
 		cin >> bet;
 		second.edit_bet(bet);
+	
 
 	}
-	int who_win(bool entry1, int diff1, bool entry2, int diff2){
-		cout <<"1 попал?" << entry1 <<" растояние---" << diff1 << endl;
-		cout <<"1 попал?" << entry2 <<" растояние---" << diff2  << endl;
 
-		if (entry1 == true && entry2 == false)
-			return 1;		
-		else if (entry1 == false && entry2 == true)
-			return 2;
+	Player get_first(){
+		return first;
+	}
+
+	Player get_second(){
+		return second;
+	}
+	int get_ang(Player a){
+		return a.what_angle();
+	}
+
+
+	int get_angle(Player one){
+		return (one.what_angle());
+
+	}
+
+	int get_speed(Player one){
+		return (one.what_speed());
+	}
+	Player who_win(bool entry1, int diff1, bool entry2, int diff2){
+
+		if (entry1 == true && entry2 == false){
+			first.win();
+			second.lose();
+			cout << "Победил:";
+			return first;	
+			}	
+		else if (entry1 == false && entry2 == true){
+			first.lose();
+			second.win();
+			cout << "Победил:";
+			return second;
+		}
 		else if (entry1 == false && entry2 == false)
-			return 0;
+			cout << "Ничья!" << endl << "ставки возращены!" << endl;
 		else if (entry1 == true && entry2 == true){
-			if (diff1 > diff2)
-				return 1;
-			else if (diff2 > diff1)
-				return 2;
-			else return 0;
+			if (diff1 > diff2){
+				cout << "Победил:"; 
+				return first;
+			}
+			else if (diff2 > diff1){
+				first.lose();
+				second.win();
+				cout << "Победил:";
+				return second;
+			}
+			else cout << "Ничья!" << endl << "ставки возращены!" << endl;
 		}	
 	}
 
@@ -151,30 +203,34 @@ int main(){
 	int difference2;
 	int in_area1;
 	int in_area2;
+	Game play;
+
+	while ((play.get_first().get_money() != 0) || (play.get_second().get_money() != 0)){	
 	Ball ball;
 	Base base(rand()%100+1);
-	Game play;
+
 
 	play.init_players();
 	play.bets();
 	base.print_coord();
 
-	ball.edit_angle(play.first.what_angle());
-	ball.edit_speed(play.first.what_speed());
+
+	ball.edit_angle(play.get_first().what_angle());
+	ball.edit_speed(play.get_first().what_speed());
 	differnce1 = base.get_difference(ball.distance());
 	in_area1 = base.checker(differnce1);
-
-	ball.edit_angle(play.second.what_angle());
-	ball.edit_speed(play.second.what_speed());
+//в отдельные функцию + выравнивание 
+	ball.edit_angle(play.get_second().what_angle());
+	ball.edit_speed(play.get_second().what_speed());
 	difference2 = base.get_difference(ball.distance());
 	in_area2 = base.checker(difference2);
 
 
-	cout << "Победил игрок №" << play.who_win(in_area1, differnce1, in_area2, difference2) << endl;
-
+	cout << play.who_win(in_area1, differnce1, in_area2, difference2).get_name() << endl;
+	}
 }	
-/* не кооректно выводит 
-проверить как вычисляются значения
+/* изменение баланса
 ужасный листненг 
-паблик пофиксить
 повыносить в функции или классы?
+f после цифр зачем Максимов?
+*/
