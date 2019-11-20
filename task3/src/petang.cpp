@@ -117,20 +117,34 @@ public:
 };
 
 class Game {
-private:			//	как пофиксить public
+private:	
 	Player first;
 	Player second;
 
 public:
-	void init_players(){
-		string name1, name2;
-		cout << "Введите имя первого игрока:" << endl;
-		cin >> name1;
-		cout << "Введите имя второго игрока:" << endl;
-		cin >> name2;
-		first.add_name(name1);
-		second.add_name(name2);
-	}
+
+		void init_players(){
+			vector<Player> all_players;
+			Player temp;
+			string name = "";
+			unsigned int n;
+			cout << "Введите кол-во игроков:" << endl;
+			cin >> n;
+			for (int i = 0; i < n; i++) {
+				temp.add_name(name);
+				all_players.push_back(temp);
+
+		}
+
+	// void init_players(){
+	// 	string name1, name2;
+	// 	cout << "Введите имя первого игрока:" << endl;
+	// 	cin >> name1;
+	// 	cout << "Введите имя второго игрока:" << endl;
+	// 	cin >> name2;
+	// 	first.add_name(name1);
+	// 	second.add_name(name2);
+	// }
 	void bets(){
 		int bet;
 		cout << first.get_name() <<", баланс:" << first.get_money() << " ваша ставка?" << endl;
@@ -195,14 +209,6 @@ public:
 	}
 
 };
-	void game_play(Player p){
-
-	ball.edit_angle(p.what_angle());
-	ball.edit_speed(p.what_speed());
-	differnce1 = base.get_difference(ball.distance());
-	in_area1 = base.checker(differnce1);
-
-	}
 
 
 int main(){
@@ -213,34 +219,32 @@ int main(){
 	int in_area2;
 	Game play;
 
-	while ((play.get_first().get_money() != 0) || (play.get_second().get_money() != 0)){	
-	Ball ball;
-	Base base(rand()%100+1);
+	// while ((play.get_first().get_money() != 0) || (play.get_second().get_money() != 0)){	
+	// Ball ball;
+	// Base base(rand()%100+1);
 
 
 	play.init_players();
-	play.bets();
-	base.print_coord();
+}
+	//play.bets();
+/*	base.print_coord();
 
 
-
-	game_play(play.get_first());
-
-
-	// ball.edit_angle(play.get_first().what_angle());
-	// ball.edit_speed(play.get_first().what_speed());
-	// differnce1 = base.get_difference(ball.distance());
-	// in_area1 = base.checker(differnce1);
+	ball.edit_angle(play.get_first().what_angle());
+	ball.edit_speed(play.get_first().what_speed());
+	differnce1 = base.get_difference(ball.distance());
+	in_area1 = base.checker(differnce1);
 //в отдельные функцию + выравнивание 
-	// ball.edit_angle(play.get_second().what_angle());
-	// ball.edit_speed(play.get_second().what_speed());
-	// difference2 = base.get_difference(ball.distance());
-	// in_area2 = base.checker(difference2);
+	ball.edit_angle(play.get_second().what_angle());
+	ball.edit_speed(play.get_second().what_speed());
+	difference2 = base.get_difference(ball.distance());
+	in_area2 = base.checker(difference2);
 
 
 	cout << play.who_win(in_area1, differnce1, in_area2, difference2).get_name() << endl;
 	}
 }	
+*/
 /* изменение баланса
 ужасный листненг 
 повыносить в функции или классы?

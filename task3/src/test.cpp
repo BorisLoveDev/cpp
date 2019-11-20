@@ -11,19 +11,25 @@ using namespace std;
 
 
 
-void thr_fun(){
-	int i = 0;
-	while (i < 10)
-	cout << "Привет, из другого потока!\n" << i << endl;
-}
+class Ball{
+ int x;
+ int y;
+public:
+	Ball(int tx, int ty): x(tx), y(ty){}
+	void show(){
+		cout << "x=" << x << endl;
+		cout << "y=" << y << endl;
+	}
+	~Ball() {
+		cout << "я есть деструктор" << endl;
 
+	}
+};
 
 
 int main(){
-	
-thread thr(thr_fun);
-
-thr.join();
+	auto unq = make_unique<Ball>(10,11);
+	unq->show();
 
  return 0;
 
